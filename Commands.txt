@@ -36,6 +36,7 @@ Mean Squared Error: 65587.17942642553
 >>>
 
 5.Visualize the model
+visualize 1
 > >> plt.scatter(y_test, predictions)
 <matplotlib.collections.PathCollection object at 0x0000020487C7F670>
 >> plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', 1w=2)
@@ -45,6 +46,22 @@ Text(0.5, 0, 'Actual')
 >>> plt.ylabel('Predicted')
 Text(0, 0.5, 'Predicted')
 >>> plt.title('Actual vs Predicted') Text(0.5, 1.0, 'Actual vs Predicted')
+>>> plt.show()
+
+visualize 2
+>>> residuals = y_test predictions
+>>> plt.scatter (predictions, residuals)
+<matplotlib.collections.PathCollection object at 0x0000020496DB5C30>
+>>> plt.xlabel('Predicted')
+Text(0.5, 0, 'Predicted')
+>>> plt.ylabel('Actual')
+Text(0, 0.5, 'Actual')
+>>> plt.ylabel('Residuals')
+Text(0, 0.5, 'Residuals')
+>>> plt.axhline(y=0, color='r', linestyle='..')
+>>> plt.axhline(y=0, color='r', linestyle-'--') <matplotlib.lines. Line2D object at 0x0000020A9009C6D0>
+>>> plt.title('Residual Plot')
+Text(0.5, 1.0, 'Residual Plot')
 >>> plt.show()
 
 
