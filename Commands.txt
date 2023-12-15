@@ -1,0 +1,83 @@
+1.How the data was ingested into Hadoop data lake
+
+C:\Hadoop\hadoop-2.9.2\bin>hdfs dfs -mkdir /COVID19
+C:\Hadoop\hadoop-2.9.2\bin>hdfs dfs -put C:\Users\USER\Desktop\bit 3.1\dbms\kenyacompiled.csv /COVID19
+put: C:/Users/USER/Desktop/bit': No such file or directory
+put:
+3.1/dbms/kenyacompiled.csv': No such file or directory
+C:\Hadoop\hadoop-2.9.2\bin>hdfs dfs -put C:\Users\USER\Desktop\bit3.1\dbms\kenyacompiled.csv /COVID19
+C:\Hadoop\hadoop-2.9.2\bin>
+
+2.How data was extracted using pyspark 
+>>> from pyspark.sql import SparkSession
+>>> spark = SparkSession.builder.appName("DataExtraction").getOrCreate()
+>>> data = spark.read.format("csv").option("header","true").load("hdfs://localhost:9000/COVID19/kenyacompiled.csv")
+>>> data.show()
+
+3.pre-processing tasks/techniques used to prepare the data 
+>>> dt2 = data.filter((col("Confirmed") != 0) | (col("Recovered") != 0) | (col("Deaths") != 0))
+>>> dt2.show()
+
+4.predictive analytics technique to generate a model for predicting Number of Death cases or Mortality rate
+>>> from sklearn.model_selection import train_test_split
+>>> from sklearn.linear_model import LinearRegression >>> from sklearn.metrics import mean_squared_error
+>>> df = pd.DataFrame(df)
+>>> x = df[['Confirmed', 'Recovered']]
+>>> y = df['Deaths']
+>>> X train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+>>> x train, x test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+>>> model = LinearRegression()
+>>> model.fit(x_train, y_train)
+LinearRegression()
+>> predictions = model.predict(x_test) >
+>>> mse = mean_squared_error(y_test, predictions)
+>>> print (f"Mean Squared Error: {mse}")
+Mean Squared Error: 65587.17942642553
+>>>
+
+5.Visualize the model
+> >> plt.scatter(y_test, predictions)
+<matplotlib.collections.PathCollection object at 0x0000020487C7F670>
+>> plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', 1w=2)
+> [<matplotlib.lines. Line2D object at 0x0000020A95DD74F0>]
+>>> plt.xlabel('Actual')
+Text(0.5, 0, 'Actual')
+>>> plt.ylabel('Predicted')
+Text(0, 0.5, 'Predicted')
+>>> plt.title('Actual vs Predicted') Text(0.5, 1.0, 'Actual vs Predicted')
+>>> plt.show()
+
+
+6.Test the model
+test1
+>>> predictions = model.predict(x_test)
+>>> mse = mean_squared_error(y_test, predictions)
+>> print(f"Mean Squared Error: {mse}") >
+Mean Squared Error: 65587.17942642553
+>>>
+
+test 2
+>>>
+>>> from sklearn.metrics import mean_squared_error
+>>> rmse = mean_squared_error(y_test, predictions, squared=False)
+>>> print("Root Mean Squared Error (RMSE):", rmse)
+Root Mean Squared Error (RMSE): 256.0999403092971
+>>>
+
+7.Validate the model
+>>> from sklearn.model_selection import cross_val_score, KFold
+>>> k_folds = 5
+>>> kf = KFold(n_splits=k_folds, shuffle=True, random_state=42)
+>>> scores = cross_val_score(model, X, y, scoring='neg_mean_squared_error', cv=kf)
+Traceback (most recent call last):
+File "<stdin>", line 1, in <module>
+NameError: name 'X' is not defined. Did you mean: 'x'?
+>>> scores = cross_val_score (model, x, y, scoring='neg_mean_squared_error', cv=kf)
+>>> mse_scores = scores
+>>> mean_mse = mse_scores.mean()
+>>> std_mse = mse_scores.std()
+>>> print(f"Mean MSE across {k_folds}-fold cross-validation:", mean_mse)
+Mean MSE across 5-fold cross-validation: 91785.74250882091
+>>> print(f"Standard Deviation of MSE across {k_folds}-fold cross-validation:", std_mse)
+Standard Deviation of MSE across 5-fold cross-validation: 13835.480390951867
+>>>
